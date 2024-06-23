@@ -23,10 +23,13 @@ class GameState(State):
         self.cards = list(cards) 
         random.shuffle(self.cards)
 
+        if len(self.cards) == 0:
+            self.back()
+
     def back(self) -> None:
-        State.switch_state(self.main.menu_state)
         self.current_card = 0
         self.cards = []
+        State.switch_state(self.main.menu_state)
 
     def tick(self):
         keys = py.key.get_pressed()

@@ -1,29 +1,38 @@
+import pygame as py
+
 from scr.states.State import State
-from scr.Category import Category
 from scr.Assets import Assets
-from scr.Button import Button
+
+from scr.buttons.BasicButton import BasicButton
+from scr.buttons.Category import Category
+from scr.buttons.CategoryCollection import CategoryCollection
 
 class MenuState(State):
     def __init__(self, main):
         super().__init__(main)
 
-        self.categories = [Category(10, 280, 200, 70, "UN_States", "United Nations"),
-                           Category(10, 355, 200, 70, "Europe"),
-                           Category(10, 430, 200, 70, "North_Latein_America", "North America"),
-                           Category(10, 505, 200, 70, "South_America", "South America"),
-                           Category(10, 580, 200, 70, "Africa"),
-                           Category(10, 655, 200, 70, "Asia"),
-                           Category(10, 730, 200, 70, "Oceania"),
-                           Category(10, 805, 200, 70, "Other"),
-                           Category(250, 280, 200, 70, "Test")]
+        self.categories = [Category(335, 10, 200, 200, "Europe", img=Assets.EUROPE_BUTTON, colorT=(255, 255, 255), offset_y=200, offset_x=55),
+                           Category(565, 10, 200, 200, "North_Latein_America", "North America", img=Assets.NORTH_AMERICA_BUTTON, colorT=(255, 255, 255), offset_y=200),
+                           Category(795, 10, 200, 200, "South_America", "South America", img=Assets.SOUTH_AMERICA_BUTTON, colorT=(255, 255, 255), offset_y=200),
+                           Category(335, 240, 200, 200, "Africa", img=Assets.AFRICA_BUTTON, colorT=(255, 255, 255), offset_y=200, offset_x=60),
+                           Category(565, 240, 200, 200, "Asia", img=Assets.ASIA_BUTTON, colorT=(255, 255, 255), offset_y=200, offset_x=75),
+                           Category(795, 240, 200, 200, "Oceania", img=Assets.OCEANIA_BUTTON, colorT=(255, 255, 255), offset_y=200, offset_x=50),
+                           #Category(250, 280, 200, 200, "Other"),
+                           #Category(250, 365, 200, 200, "Test")
+                           ]
+        
+        self.collection = [CategoryCollection(25, 300, 250, 160, "United Nations", self.categories[0:6], img=Assets.UN_BUTTON, colorT=(255, 255, 255), offset_y=165, offset_x=30)]
 
-        self.play_button = Button(235, 900, 250, 70, "Play", (200, 200, 200), (255, 255, 100))
+        self.play_button = BasicButton(25, 899, 250, 100, "Play", border_size=30, offset_x=55, offset_y=15, font_size=80)
 
     def tick(self):
         for c in self.categories:
             c.tick()
 
-        if self.play_button.is_clicked():
+        for c in self.collection:
+            c.tick()
+
+        if self.play_button.tick():
             selected_categories = [] # Using a set because order is irrelevant and duplicates aren't wished for
 
             # Add all categories
@@ -47,5 +56,10 @@ class MenuState(State):
         for c in self.categories:
             c.render(win)
 
-        win.blit(Assets.GLOBE_IMG, (235, 10))
+        for c in self.collection:
+            c.render(win)
+
+        py.draw.rect(win, (255, 255, 255), (300, 0, 5, 1024))
+
+        win.blit(Assets.GLOBE_IMG, (25, 25))
 

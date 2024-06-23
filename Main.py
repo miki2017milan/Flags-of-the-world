@@ -9,21 +9,17 @@ py.init()
 
 class Main:
     def __init__(self):
-        # Window
-        self.WIDTH = 720
-        self.HEIGHT = 1024
+        Assets.load_images()
+        Assets.load_categories()
+        Assets.load_flags()
 
-        self.win = py.display.set_mode((self.WIDTH, self.HEIGHT))
+        self.win = py.display.set_mode((Assets.WINDOW_WIDTH, Assets.WINDOW_HEIGHT))
         py.display.set_caption("Flags of the World")
 
         # Tick
         self.clock = py.time.Clock()
         self.FPS = 60
         self.running = True
-
-        Assets.load_images()
-        Assets.load_categories()
-        Assets.load_flags()
 
         # States
         self.menu_state = MenuState(self)

@@ -7,13 +7,31 @@ from os import listdir
 from os.path import isfile
 
 class Assets:
+    WINDOW_WIDTH: int = 1024
+    WINDOW_HEIGHT: int = 1024
+
     GLOBE_IMG: py.surface.Surface
+    NORTH_AMERICA_BUTTON: py.surface.Surface
+    SOUTH_AMERICA_BUTTON: py.surface.Surface
+    ASIA_BUTTON: py.surface.Surface
+    EUROPE_BUTTON: py.surface.Surface
+    AFRICA_BUTTON: py.surface.Surface
+    OCEANIA_BUTTON: py.surface.Surface
+    UN_BUTTON: py.surface.Surface
+
     CATEGORIES: dict[str, str]
     FLAGS: dict[str, Flashcard]
     
     @staticmethod
     def load_images():
         Assets.GLOBE_IMG = utils.load_image("Other_Images\\Globe.png")
+        Assets.NORTH_AMERICA_BUTTON = utils.load_image("Other_Images\\NorthAmerica.png")
+        Assets.SOUTH_AMERICA_BUTTON = utils.load_image("Other_Images\\SouthAmerica.png")
+        Assets.ASIA_BUTTON = utils.load_image("Other_Images\\Asia.png")
+        Assets.EUROPE_BUTTON = utils.load_image("Other_Images\\Europe.png")
+        Assets.AFRICA_BUTTON = utils.load_image("Other_Images\\Africa.png")
+        Assets.OCEANIA_BUTTON = utils.load_image("Other_Images\\Oceania.png")
+        Assets.UN_BUTTON = utils.load_image("Other_Images\\UN.png")
 
     @staticmethod
     def load_categories():
@@ -22,8 +40,6 @@ class Assets:
         Assets.CATEGORIES = {}
         for c in categories_file_names:
             Assets.CATEGORIES[c] = utils.load_category(c)
-
-        print(Assets.CATEGORIES["Europe"])
 
     @staticmethod
     def load_flags():

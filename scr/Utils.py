@@ -22,12 +22,15 @@ def load_flag_info(info_name: str) -> dict[str, str]:
         data = {}
 
         try:
-            with open(FLAG_INFO_PATH + info_name + ".json", "r") as file:
+            with open(FLAG_INFO_PATH + info_name + ".json", "r", encoding="utf-8") as file:
                 data = json.loads(file.read())
         except FileNotFoundError:
             raise FileNotFoundError(f"Datei '{FLAG_INFO_PATH + info_name + ".json"}' nicht gefunden!")
         
         return data
+
+def center_x(width):
+     return int((1024 - width) / 2)
 
 if __name__ == "__main__":
     pass
