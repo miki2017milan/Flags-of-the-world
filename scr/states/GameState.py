@@ -1,6 +1,5 @@
 import pygame as py
 import random
-
 from scr.states.State import State
 from scr.Assets import Assets
 
@@ -12,10 +11,16 @@ class GameState(State):
         self.current_card = 0
         self.can_space = True
 
-    def load_cards(self, selected_cards: set[str]) -> None:
-        for c in selected_cards:
-            self.cards.append(Assets.FLAGS[c])
-        
+    def load_cards(self, selected_categories: set[str]) -> None:
+        cards = set() # No duplicates
+        for c in selected_categories:
+            for card in Assets.CATEGORIES[c]:
+                try:
+                    cards.add(Assets.FLAGS[card])
+                except KeyError:
+                    print(f"ADD ERROR: Flagge '{card}' konnte nicht zum spiel hinzugefügt werden da es ein Fehler beim Laden der Karte gab!")
+
+        self.cards = list(cards) 
         random.shuffle(self.cards)
 
     def back(self) -> None:
@@ -25,10 +30,6 @@ class GameState(State):
 
     def tick(self):
         keys = py.key.get_pressed()
-
-        # for c in self.cards:
-        #     print(c.name, end=", ")
-        # print()
 
         if self.can_space and keys[py.K_SPACE]:
             self.can_space = False

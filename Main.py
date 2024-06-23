@@ -3,7 +3,6 @@ import pygame as py
 from scr.states.GameState import GameState
 from scr.states.MenuState import MenuState
 from scr.states.State import State
-
 from scr.Assets import Assets
 
 py.init()
@@ -22,7 +21,9 @@ class Main:
         self.FPS = 60
         self.running = True
 
-        Assets.load()
+        Assets.load_images()
+        Assets.load_categories()
+        Assets.load_flags()
 
         # States
         self.menu_state = MenuState(self)
