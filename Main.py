@@ -5,15 +5,15 @@ from scr.states.MenuState import MenuState
 from scr.states.State import State
 from scr.Assets import Assets
 
+from scr.utils import Config
 py.init()
 
 class Main:
     def __init__(self):
-        Assets.load_images()
         Assets.load_categories()
         Assets.load_flags()
 
-        self.win = py.display.set_mode((Assets.WINDOW_WIDTH, Assets.WINDOW_HEIGHT))
+        self.set_windowed()
         py.display.set_caption("Flags of the World")
 
         # Tick
@@ -54,6 +54,19 @@ class Main:
 
         py.quit()
         exit()
+
+    def set_windowed(self):
+        self.win = py.display.set_mode((Config.get_window_width(), Config.get_window_height()))
+
+    def set_fullscreen(self):
+        self.win = py.display.set_mode((Config.get_window_width(), Config.get_window_height()), py.FULLSCREEN)
+
+    # Getter
+    def get_menu_state(self) -> MenuState:
+        return self.menu_state
+    
+    def get_game_state(self) -> GameState:
+        return self.game_state
 
 if __name__ == "__main__":
     main = Main()

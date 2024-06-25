@@ -3,10 +3,8 @@ from scr.buttons.ButtonControl import ButtonControl
 
 import pygame as py
 
-# category height = 70
-
 class Category(ButtonControl):
-    def __init__(self, x, y, width, height, category_name, display_text: str="", color=(255, 255, 255), colorB=(0, 0, 0), colorT=(0, 0, 0), font_size=30, offset_x=10, offset_y=10, border_size=3, img=None):
+    def __init__(self, x: int, y: int, width: int, height: int, category_name: str, display_text: str="", color: tuple[int, int, int]=(255, 255, 255), colorB: tuple[int, int, int]=(0, 0, 0), colorT: tuple[int, int, int]=(0, 0, 0), font_size: int=30, offset_x: int=10, offset_y: int=10, border_size: int=3, img: py.surface.Surface=None):
         super().__init__(x, y, width, height, display_text, color, colorB, colorT, font_size, offset_x, offset_y, border_size, img)
         self.category_name = category_name
 
@@ -14,15 +12,18 @@ class Category(ButtonControl):
 
         self.selected = False
 
-    def render(self, win):
+    def render(self, win: py.surface.Surface) -> None:
         super().render(win)
 
         if self.selected:
-            self.render_selected(win)
+            py.draw.rect(win, (255, 255, 100), (self.x, self.y, self.width, self.height), 5, self.BORDER_SIZE)
 
-    def click_action(self):
+    def click_action(self) -> None:
         self.selected = not self.selected
 
-    def render_selected(self, win):
-        py.draw.rect(win, (255, 255, 100), (self.x, self.y, self.width, self.height), 5, self.BORDER_SIZE)
+    def get_selected(self) -> bool:
+        return self.selected
+    
+    def set_selected(self, value: bool):
+        self.selected = value
     

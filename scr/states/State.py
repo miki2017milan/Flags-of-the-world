@@ -14,8 +14,6 @@ class State(ABC):
     def __init__(self, main: Main):
         self.main = main
 
-        self.sub_state: State
-
     @staticmethod
     def switch_state(state: State) -> None:
         State.state = state

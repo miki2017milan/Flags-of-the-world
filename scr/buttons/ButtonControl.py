@@ -30,7 +30,7 @@ class ButtonControl(ABC):
             return True
         return False
     
-    def tick(self):
+    def tick(self) -> bool | None:
         if not py.mouse.get_pressed()[0]:
             self.can_click = True
 
@@ -48,9 +48,5 @@ class ButtonControl(ABC):
         win.blit(self.font.render(self.text, False, self.colorT), (self.x + self.offset_x, self.y + self.offset_y))
 
     @abstractmethod
-    def render_selected(self, win: py.surface.Surface) -> None:
-        pass
-
-    @abstractmethod
-    def click_action(self):
+    def click_action(self) -> bool | None:
         pass
