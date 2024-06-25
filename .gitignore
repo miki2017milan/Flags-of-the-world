@@ -3,6 +3,7 @@
 /scr/flashcards/__pycache__
 /scr/states/__pycache__
 /scr/utils/__pycache__
+/scr/buttons/__pycache__
 /.vscode
 /utils
 /.mypy_cache

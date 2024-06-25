@@ -3,7 +3,7 @@ import pygame as py
 from abc import ABC, abstractmethod
 
 class ButtonControl(ABC):
-    def __init__(self, x: int, y: int, width: int, height: int, text: str, color: tuple[int, int, int]=(255, 255, 255), colorB: tuple[int, int, int]=(0, 0, 0), colorT: tuple[int, int, int]=(0, 0, 0), font_size: int=30, offset_x: int=10, offset_y: int=10, border_size: int=3, img: py.surface.Surface=None):
+    def __init__(self, x: int, y: int, width: int, height: int, text: str, color: tuple[int, int, int]=(255, 255, 255), colorB: tuple[int, int, int]=(0, 0, 0), colorT: tuple[int, int, int]=(0, 0, 0), font_size: int=30, offset_x: int=10, offset_y: int=10, border_size: int=3, img: py.surface.Surface | None=None):
         self.x = x
         self.y = y
         self.width = width
@@ -37,6 +37,7 @@ class ButtonControl(ABC):
         if self.is_clicked():
             self.can_click = False
             return self.click_action()
+        return None
 
     def render(self, win: py.surface.Surface) -> None:
         if not self.img:

@@ -40,10 +40,10 @@ def load_flag_info(info_name: str) -> dict[str, str]:
         
         return data
 
-def center_x(width):
+def center_x(width: int) -> int:
      return int((Config.get_window_width() - width) / 2)
 
-def center_y(height):
+def center_y(height: int) -> int:
      return int((Config.get_window_height() - height) / 2)
 
 if __name__ == "__main__":
