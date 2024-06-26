@@ -71,7 +71,7 @@ class Flashcard:
     def render(self, win: py.surface.Surface) -> None:
         if self.mode == 0:
             win.blit(self.flag, (self.flag_x, self.flag_y))
-            py.draw.rect(win, (100, 100, 100), (0, 500, 1024, 524))
+            py.draw.rect(win, (100, 100, 100), (0, 500, Config.get_window_width(), Config.get_window_height()))
         elif self.mode == 1:
             win.blit(self.flag, (self.flag_x, self.flag_y))
             self.render_info(win)
