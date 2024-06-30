@@ -6,12 +6,17 @@ from scr.states.State import State
 from scr.Assets import Assets
 
 from scr.utils import Config
+
+import time
 py.init()
 
 class Main:
     def __init__(self):
+        starttime = time.time()
         Assets.load_categories()
         Assets.load_flags()
+        endtime = time.time()
+        print(f"Startup Took: {endtime - starttime} s")
 
         self.set_windowed()
         py.display.set_caption("Flags of the World")

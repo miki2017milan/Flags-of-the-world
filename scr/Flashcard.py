@@ -5,8 +5,6 @@ from scr.utils import Utils, Config
 class Flashcard:
     def __init__(self, name: str):
         self.info = Utils.load_flag_info(name)
-        for k, v in self.info.items():
-            self.info[k] = v.split("\n")
 
         self.flag = Utils.load_flag(name)
         self.flag_x = Utils.center_x(self.flag.get_width())
@@ -45,7 +43,7 @@ class Flashcard:
             for i, j in enumerate(self.name):
                 win.blit(self.name_font.render(j, False, (255, 255, 255)), (self.name_pos[i], 10 + i * self.LINE_HEIGHT))
         else:
-            win.blit(self.name_font.render("No map available", False, (255, 255, 255)), (300, 480))
+            win.blit(self.name_font.render("No map available", False, (255, 255, 255)), (Utils.center_x(self.get_text_width("No map available")), 500))
 
     def render_info(self, win: py.surface.Surface) -> None:
         line_num = 0 # Track the current line
@@ -57,6 +55,9 @@ class Flashcard:
 
         # Draw deviding line
         py.draw.rect(win, (255, 255, 255), (0, 500 + line_num * (self.LINE_HEIGHT + 10), Config.get_window_width(), 3))
+
+        if not self.info:
+            return
 
         # Draw added info from json file
         for k, v in self.info.items():

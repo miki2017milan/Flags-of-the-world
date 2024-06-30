@@ -23,8 +23,4 @@ class Assets:
 
         Assets.FLAGS = {}
         for f in flags:
-            if isfile(Utils.FLAG_PATH + f + "\\" + f + ".json"):
-                Assets.FLAGS[f] = Flashcard(f)
-            else:
-                pass
-                # print(f"LOAD ERROR: Flagge '{f}' konnte nicht geladen werden, da keine im Namen übereinstimmende Flaggen-Info-File existiert!")
+            Assets.FLAGS[f] = Flashcard(f)
