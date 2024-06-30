@@ -19,7 +19,7 @@ def load_map(map_name: str) :
     try:
         return py.image.load(FLAG_PATH + f"{map_name}\\Map.png")
     except FileNotFoundError:
-        print(f"MAP ERROR: Die Map '{FLAG_PATH + f"{map_name}\\{map_name}_Map.png"}' konnte nicht gelanden werden!")
+        # print(f"MAP ERROR: Die Map '{FLAG_PATH + f"{map_name}\\{map_name}_Map.png"}' konnte nicht gelanden werden!")
         return
 
 def load_category(category_name: str) -> list[str]:

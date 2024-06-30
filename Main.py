@@ -1,4 +1,5 @@
 import pygame as py
+py.init()
 
 from scr.states.GameState import GameState
 from scr.states.MenuState import MenuState
@@ -7,16 +8,13 @@ from scr.Assets import Assets
 
 from scr.utils import Config
 
+import threading as th
 import time
-py.init()
 
 class Main:
     def __init__(self):
-        starttime = time.time()
-        Assets.load_categories()
-        Assets.load_flags()
-        endtime = time.time()
-        print(f"Startup Took: {endtime - starttime} s")
+        loading_thread = th.Thread(target=self.load)
+        loading_thread.start()
 
         self.set_windowed()
         py.display.set_caption("Flags of the World")
@@ -59,6 +57,16 @@ class Main:
 
         py.quit()
         exit()
+
+    def load(self):
+        starttime = time.time()
+
+        Assets.load_categories()
+        Assets.load_flags()
+        Assets.FINISHED_LOADING = True
+
+        endtime = time.time()
+        print(f"Loading Assets Took: {endtime - starttime} s")
 
     def set_windowed(self):
         self.win = py.display.set_mode((Config.get_window_width(), Config.get_window_height()))

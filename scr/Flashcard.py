@@ -1,4 +1,5 @@
 import pygame as py
+py.init()
 
 from scr.utils import Utils, Config
 

@@ -11,8 +11,9 @@ if TYPE_CHECKING:
 class State(ABC):
     state: State
 
-    def __init__(self, main: Main):
+    def __init__(self, main: Main, parent_state: State | None=None):
         self.main = main
+        self.parent_state = parent_state
 
     @staticmethod
     def switch_state(state: State) -> None:
