@@ -15,7 +15,7 @@ class GameState(State):
     def load_cards(self, selected_categories: set[str], include_map: bool) -> None:
         cards = set() # No duplicates
         for c in selected_categories:
-            for card in Assets.CATEGORIES[c]:
+            for card in Assets.CATEGORIES[c]["Countries"]:
                 try:
                     cards.add(Assets.FLAGS[card])
                 except KeyError:

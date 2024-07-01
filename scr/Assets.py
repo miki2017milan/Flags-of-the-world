@@ -5,20 +5,27 @@ from scr.Flashcard import Flashcard
 import threading as th
 
 from os import listdir
-from os.path import isfile
+from os.path import isdir, isfile
 
 class Assets:
-    CATEGORIES: dict[str, str]
+    COLLECTIONS: dict[str, list[str]]
+    CATEGORIES: dict[str, list[str]]
     FLAGS: dict[str, Flashcard]
     FINISHED_LOADING = False
 
     @staticmethod
     def load_categories():
-        categories_file_names = [f.replace(".txt", "") for f in listdir(Utils.CATEGORIES_PATH) if isfile(Utils.CATEGORIES_PATH + f)]
-
+        Assets.COLLECTIONS = {}
         Assets.CATEGORIES = {}
-        for c in categories_file_names:
-            Assets.CATEGORIES[c] = Utils.load_category(c)
+        for collection in listdir(Utils.CATEGORIES_PATH): # For each Collection from /res/Collections
+            if isdir(Utils.CATEGORIES_PATH + collection):
+                Assets.COLLECTIONS[collection] = []
+
+                for f in listdir(Utils.CATEGORIES_PATH + collection): # For every Category the collection that has an icon image
+                    if isdir(Utils.CATEGORIES_PATH + collection + "\\" + f) and isfile(Utils.CATEGORIES_PATH + collection + "\\" + f + "\\Icon.png"):
+                        Assets.COLLECTIONS[collection].append(f)
+
+                        Assets.CATEGORIES[f] = Utils.load_category(collection + "\\" + f)
 
     @staticmethod
     def load_flags():
