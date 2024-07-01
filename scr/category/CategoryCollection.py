@@ -1,25 +1,28 @@
 from __future__ import annotations
 
-from scr.buttons.Category import Category
+from scr.category.Category import Category
 from gui.ImageButton import ImageButton
+from scr.utils import Utils
 
 import pygame as py
 
-class CategoryCollection(ImageButton):
-    def __init__(self, x: int, y: int, width: int, height: int, categories: list[Category], img: py.surface.Surface, display_text):
-        super().__init__(x, y, img, width, height, display_text, 30, 0, 200, (255, 255, 255), "Calibri")
-        self.categories = categories
+class CategoryCollection:
+    def __init__(self, categories: list[str]):
+        self.categories = []
 
-        self.center_text_x()
+        start_pos = (325, 10)
+        increments = (230, 230)
+        row = -1
+        for i, c in enumerate(categories):
+            if i % 7 == 0:
+                row += 1
+            self.categories.append(Category(start_pos[0] + increments[0] * (i % 7), start_pos[1] + increments[1] * row, c))
 
-        self.selected = False
+    def tick(self) -> None:
+        for c in self.categories:
+            c.tick()
 
-    def tick(self):
-        if self.is_clicked():
-            if self.categories[0].selected:
-                for c in self.categories:
-                    c.selected = False
-                return
-            for c in self.categories:
-                c.selected = True
+    def render(self, win: py.surface.Surface) -> None:
+        for c in self.categories:
+            c.render(win)
     

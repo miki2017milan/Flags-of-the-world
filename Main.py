@@ -1,15 +1,15 @@
 import pygame as py
 py.init()
 
+import threading as th
+import time
+
 from scr.states.GameState import GameState
 from scr.states.MenuState import MenuState
 from scr.states.State import State
+
 from scr.Assets import Assets
-
 from scr.utils import Config
-
-import threading as th
-import time
 
 class Main:
     def __init__(self):

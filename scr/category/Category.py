@@ -1,12 +1,13 @@
 from __future__ import annotations
 
 from gui.ImageButton import ImageButton
+from scr.utils import Utils
 
 import pygame as py
 
 class Category(ImageButton):
-    def __init__(self, x: int, y: int, category_name: str, img: py.surface.Surface, display_text):
-        super().__init__(x, y, img, 200, 200, display_text, 30, 0, 200, (255, 255, 255), "Calibri")
+    def __init__(self, x: int, y: int, category_name: str):
+        super().__init__(x, y, Utils.load_image(category_name), 200, 200, category_name, 30, 0, 200, (255, 255, 255), "Calibri")
         self.category_name = category_name
 
         self.center_text_x()
