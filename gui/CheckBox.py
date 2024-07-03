@@ -1,6 +1,6 @@
 import pygame as py
 
-from gui.Label import Label
+from .Label import Label
 from typing import Iterable
 
 class CheckBox:

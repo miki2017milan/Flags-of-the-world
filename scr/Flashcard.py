@@ -14,22 +14,22 @@ class Flashcard:
         self.map = Utils.load_map(name)
         if self.map:
             self.map_x = Utils.center_x(self.map.get_width())
-            self.map_y = Utils.center_y(self.map.get_height()) + 50
+            self.map_y = Utils.center_y(self.map.get_height()) + 70
 
-        self.LINE_HEIGHT = 50
-        self.mode = 0
+        self.LINE_HEIGHT = 50 # For rendering the information
+        self.mode = 0 # 0 = Draw Flag unreveald, 1 = reveald info, 2 = show map
 
         self.name_font = py.font.SysFont("Calibri", 60, True)
         self.info_font = py.font.SysFont("Calibri", 40, False)
-        self.reveal_font = py.font.SysFont("Calibri", 80, False)
         self.text_color = (255, 255, 255)
 
         self.name = [name]
-        self.name_pos = [Utils.center_x(self.get_text_width(self.name[0]))]
+        self.name_pos = [Utils.center_x(self.get_text_width(name))]
 
         # Split the name if its to long to make it look better
-        if len(name) > 25:
-            temp = name[:25].rfind(" ") # Get the index of the last space before the line end
+        MAX_NAME_LENGTH = 25
+        if len(name) > MAX_NAME_LENGTH:
+            temp = name[:MAX_NAME_LENGTH].rfind(" ") # Get the index of the last space before the line end
             self.name = [name[:temp], name[temp + 1:]] # + 1 to not the the space at the start
 
             self.name_pos = [Utils.center_x(self.get_text_width(self.name[0])), Utils.center_x(self.get_text_width(self.name[1]))]
@@ -60,24 +60,24 @@ class Flashcard:
         if not self.info:
             return
 
-        # Draw added info from json file
+        # Draw info from json file
         for k, v in self.info.items():
             win.blit(self.info_font.render(f"{k}: {v[0]}", False, self.text_color), (10, 540 + line_num * self.LINE_HEIGHT))
             line_num += 1
 
-            # If the value is multilined
-            for t in v[1:]:
-                win.blit(self.info_font.render(f"{t}", False, self.text_color), (10, 540 + line_num * self.LINE_HEIGHT))
+            # If the info is multilined
+            for line in v[1:]:
+                win.blit(self.info_font.render(f"{line}", False, self.text_color), (10, 540 + line_num * self.LINE_HEIGHT))
                 line_num += 1
 
     def render(self, win: py.surface.Surface) -> None:
-        if self.mode == 0:
+        if self.mode == 0: # unreveald flag
             win.blit(self.flag, (self.flag_x, self.flag_y))
             py.draw.rect(win, (100, 100, 100), (0, 500, Config.get_window_width(), Config.get_window_height()))
-        elif self.mode == 1:
+        elif self.mode == 1: # reveald
             win.blit(self.flag, (self.flag_x, self.flag_y))
             self.render_info(win)
-        else:
+        else: # map
             self.render_map(win)
 
     def next_mode(self) -> None:

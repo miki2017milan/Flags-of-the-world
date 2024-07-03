@@ -1,10 +1,10 @@
 import pygame as py
 
-from gui.Label import Label
+from .Label import Label
 from typing import Iterable
 
 class Button:
-    def __init__(self, x: int, y: int, width: int, height: int, text: str, font_size: int, text_offset_x: int=10, text_offset_y: int=10, corner_roundness: int=0, border_thickness: int=5, color_back: tuple[int, int, int]=(255, 255, 255), color_border: tuple[int, int, int]=(0, 0, 0), color_text: tuple[int, int, int]=(0, 0, 0), font_art: str="Consolas"):
+    def __init__(self, x: int, y: int, width: int, height: int, text: str, font_size: int, text_offset_x: int=10, text_offset_y: int=10, corner_roundness: int=0, border_thickness: int=5, color_back: tuple[int, int, int]=(255, 255, 255), color_border: tuple[int, int, int]=(0, 0, 0), color_text: tuple[int, int, int]=(0, 0, 0), font_art: str="Consolas", center_text: bool=True):
         self._x = x
         self._y = y
         self._width = width
@@ -19,6 +19,10 @@ class Button:
         self._text = Label(x + text_offset_x, y + text_offset_y, text, font_size, color_text, font_art)
 
         self._can_click = True
+
+        if center_text:
+            self.center_text_x()
+            self.center_text_y()
 
     def render(self, win: py.surface.Surface) -> None:
         py.draw.rect(win, self.color_back, (self.x, self.y, self.width, self.height), border_radius=self.corner_roundness)

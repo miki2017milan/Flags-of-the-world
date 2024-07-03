@@ -1,13 +1,12 @@
 {
     "Countries": ["Abkhazia",
-                  "Artsakh",
+                  "Kosovo",
                   "Northern Cyprus",
+                  "Sahrawi Arab Democratic Republic (West Sahara)",
                   "Somaliland",
                   "South Ossetia",
-                  "Transnistria",
-                  "Kosovo",
                   "Taiwan",
-                  "Western Sahara"
+                  "Transnistria"
                 ],
     "Description": ""
 }

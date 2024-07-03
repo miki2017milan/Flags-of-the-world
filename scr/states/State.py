@@ -5,15 +5,13 @@ from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     import pygame as py
-
     from Main import Main
 
 class State(ABC):
     state: State
 
-    def __init__(self, main: Main, parent_state: State | None=None):
+    def __init__(self, main: Main):
         self.main = main
-        self.parent_state = parent_state
 
     @staticmethod
     def switch_state(state: State) -> None:

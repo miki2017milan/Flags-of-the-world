@@ -5,7 +5,7 @@ from scr.Flashcard import Flashcard
 import threading as th
 
 from os import listdir
-from os.path import isdir, isfile
+from os.path import isdir, isfile, join
 
 class Assets:
     COLLECTIONS: dict[str, list[str]]
@@ -17,35 +17,40 @@ class Assets:
     def load_categories():
         Assets.COLLECTIONS = {}
         Assets.CATEGORIES = {}
-        for collection in listdir(Utils.CATEGORIES_PATH): # For each Collection from /res/Collections
-            if isdir(Utils.CATEGORIES_PATH + collection):
-                Assets.COLLECTIONS[collection] = []
 
-                for f in listdir(Utils.CATEGORIES_PATH + collection): # For every Category the collection that has an icon image
-                    if isdir(Utils.CATEGORIES_PATH + collection + "\\" + f) and isfile(Utils.CATEGORIES_PATH + collection + "\\" + f + "\\Icon.png"):
-                        Assets.COLLECTIONS[collection].append(f)
+        for collection in listdir(Utils.CATEGORIES_PATH): # For each file in /res/Collections
+            if not isdir(join(Utils.CATEGORIES_PATH, collection)):
+                continue
+            Assets.COLLECTIONS[collection] = []
 
-                        Assets.CATEGORIES[f] = Utils.load_category(collection + "\\" + f)
+            for category in listdir(join(Utils.CATEGORIES_PATH, collection)): # For every Category in the collection
+                if not isdir(join(Utils.CATEGORIES_PATH, collection, category)) or not isfile(join(Utils.CATEGORIES_PATH, collection, category, "Icon.png")): # only valid if a category has an icon image
+                    continue
+                Assets.COLLECTIONS[collection].append(category)
+
+                Assets.CATEGORIES[category] = Utils.load_category(join(Utils.CATEGORIES_PATH, collection, category))
 
     @staticmethod
     def load_flags():
-        load_at_a_time = 50
-        flags = [f.encode("utf-8").decode("utf-8") for f in listdir(Utils.FLAG_PATH)]
+        Assets.FLAGS = {}
+
+        load_at_a_time = 50 # how many flags are loaded in each thread
+        flags = [f for f in listdir(Utils.FLAG_PATH)]
         flag_segments = []
-        for i in range(0, len(flags), load_at_a_time):
+        for i in range(0, len(flags), load_at_a_time): # Devide the flags in to chuncks
             flag_segments.append(flags[i:i + load_at_a_time])
 
-        load_threads = []
-        Assets.FLAGS = {}
+        loaded_threads = []
         for s in flag_segments:
-            load_threads.append(th.Thread(target=Assets.load_segement, args=(s,)))
+            loaded_threads.append(th.Thread(target=Assets._load_segement, args=(s,)))
 
-        for t in load_threads:
+        for t in loaded_threads:
             t.start()
 
-        for t in load_threads:
+        for t in loaded_threads:
             t.join()
 
-    def load_segement(flags):
+    @staticmethod
+    def _load_segement(flags):
         for f in flags:
             Assets.FLAGS[f] = Flashcard(f)

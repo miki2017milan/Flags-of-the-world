@@ -13,18 +13,17 @@ from scr.utils import Config
 
 class Main:
     def __init__(self):
+        Assets.load_categories()
         loading_thread = th.Thread(target=self.load)
         loading_thread.start()
 
         self.set_windowed()
         py.display.set_caption("Flags of the World")
 
-        # Tick
         self.clock = py.time.Clock()
         self.FPS = 60
         self.running = True
 
-        # States
         self.menu_state = MenuState(self)
         self.game_state = GameState(self)
 
@@ -43,8 +42,7 @@ class Main:
         self.clock.tick(self.FPS)
 
     def render(self) -> None:
-        # Background in case the State has no background
-        self.win.fill((200, 0, 200))
+        self.win.fill((200, 0, 200)) # Draw background in case the current state dosnt have one
             
         State.get_state().render(self.win)
         
@@ -61,7 +59,6 @@ class Main:
     def load(self):
         starttime = time.time()
 
-        Assets.load_categories()
         Assets.load_flags()
         Assets.FINISHED_LOADING = True
 

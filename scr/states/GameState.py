@@ -1,5 +1,8 @@
 import pygame as py
 import random
+
+from logging import warn
+
 from scr.states.State import State
 from scr.Assets import Assets
 
@@ -14,20 +17,21 @@ class GameState(State):
 
     def load_cards(self, selected_categories: set[str], include_map: bool) -> None:
         cards = set() # No duplicates
-        for c in selected_categories:
-            for card in Assets.CATEGORIES[c]["Countries"]:
+        for category in selected_categories:
+            for card in Assets.CATEGORIES[category]["Countries"]:
                 try:
                     cards.add(Assets.FLAGS[card])
                 except KeyError:
-                    print(f"ADD ERROR: Flagge '{card}' konnte nicht zum spiel hinzugefügt werden da es ein Fehler beim Laden der Karte gab!")
+                    warn(f"Flagge '{card}' konnte nicht zum spiel hinzugefügt werden da es ein Fehler beim Laden der Karte gab!")
+
+        if len(cards) == 0:
+            self.back()
+            return
 
         self.cards = list(cards) 
         random.shuffle(self.cards)
 
-        if len(self.cards) == 0:
-            self.back()
-
-        self.max_mode = 2 if include_map else 1
+        self.max_mode = 2 if include_map else 1 # 2 = include map
 
     def back(self) -> None:
         self.current_card = 0
@@ -47,6 +51,7 @@ class GameState(State):
 
             if self.cards[self.current_card].get_mode() > self.max_mode:
                 self.cards[self.current_card].reset_mode()
+
                 self.current_card += 1
                 if self.current_card >= len(self.cards):
                     self.back()
