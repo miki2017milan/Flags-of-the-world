@@ -53,5 +53,19 @@ def center_x(width: int) -> int:
 def center_y(height: int) -> int:
      return int((Config.get_window_height() - height) / 2)
 
+def wrapp_text(text: str, max_length: int) -> list[str]:
+    value = [text]
+    if len(text) > max_length:
+        if text.find(" ") == -1: # if the text doesn't have a space then word wrapping doesn't make any sense
+            return value
+
+        last_space_index = text[:max_length].rfind(" ") # Get the index of the last space before the line end
+        value = [text[:last_space_index], text[last_space_index + 1:]] # + 1 to not the the space at the start
+
+    return value
+
+def get_text_width(text: str, font: py.font.Font) -> int:
+    return font.render(text, False, (0, 0, 0)).get_width()
+
 if __name__ == "__main__":
     pass

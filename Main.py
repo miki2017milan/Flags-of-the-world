@@ -14,7 +14,7 @@ from scr.utils import Config
 class Main:
     def __init__(self):
         Assets.load_categories()
-        loading_thread = th.Thread(target=self.load)
+        loading_thread = th.Thread(target=self.load, daemon=True)
         loading_thread.start()
 
         self.set_windowed()
@@ -42,7 +42,7 @@ class Main:
         self.clock.tick(self.FPS)
 
     def render(self) -> None:
-        self.win.fill((200, 0, 200)) # Draw background in case the current state dosnt have one
+        self.win.fill((200, 0, 200)) # Draw background in case the current state doesn't have one
             
         State.get_state().render(self.win)
         

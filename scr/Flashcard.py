@@ -23,35 +23,27 @@ class Flashcard:
         self.info_font = py.font.SysFont("Calibri", 40, False)
         self.text_color = (255, 255, 255)
 
-        self.name = [name]
-        self.name_pos = [Utils.center_x(self.get_text_width(name))]
-
-        # Split the name if its to long to make it look better
-        MAX_NAME_LENGTH = 25
-        if len(name) > MAX_NAME_LENGTH:
-            temp = name[:MAX_NAME_LENGTH].rfind(" ") # Get the index of the last space before the line end
-            self.name = [name[:temp], name[temp + 1:]] # + 1 to not the the space at the start
-
-            self.name_pos = [Utils.center_x(self.get_text_width(self.name[0])), Utils.center_x(self.get_text_width(self.name[1]))]
-
-    def get_text_width(self, text: str) -> int:
-        return self.name_font.render(text, False, (0, 0, 0)).get_width()
+        self.name_pos = []
+        self.name = Utils.wrapp_text(name, 25)
+        for part in self.name:
+            self.name_pos.append(Utils.center_x(Utils.get_text_width(part, self.name_font)))
 
     def render_map(self, win: py.surface.Surface) -> None:
         if self.map:
             win.blit(self.map, (self.map_x, self.map_y))
             # Draw name
-            for i, j in enumerate(self.name):
-                win.blit(self.name_font.render(j, False, (255, 255, 255)), (self.name_pos[i], 10 + i * self.LINE_HEIGHT))
-        else:
-            win.blit(self.name_font.render("No map available", False, (255, 255, 255)), (Utils.center_x(self.get_text_width("No map available")), 500))
+            for i, name_part in enumerate(self.name):
+                win.blit(self.name_font.render(name_part, False, self.text_color), (self.name_pos[i], 10 + i * self.LINE_HEIGHT))
+            return
+        
+        win.blit(self.name_font.render("No map available", False, (255, 255, 255)), (Utils.center_x(self.get_text_width("No map available")), 500))
 
     def render_info(self, win: py.surface.Surface) -> None:
         line_num = 0 # Track the current line
 
         # Draw name
-        for i, j in enumerate(self.name):
-            win.blit(self.name_font.render(j, False, (255, 255, 255)), (self.name_pos[i], 500 + line_num * self.LINE_HEIGHT))
+        for i, name_part in enumerate(self.name):
+            win.blit(self.name_font.render(name_part, False, (255, 255, 255)), (self.name_pos[i], 500 + line_num * self.LINE_HEIGHT))
             line_num += 1
 
         # Draw deviding line
@@ -79,12 +71,3 @@ class Flashcard:
             self.render_info(win)
         else: # map
             self.render_map(win)
-
-    def next_mode(self) -> None:
-        self.mode += 1
-
-    def get_mode(self) -> int:
-        return self.mode
-    
-    def reset_mode(self) -> None:
-        self.mode = 0

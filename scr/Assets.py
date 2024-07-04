@@ -42,7 +42,7 @@ class Assets:
 
         loaded_threads = []
         for s in flag_segments:
-            loaded_threads.append(th.Thread(target=Assets._load_segement, args=(s,)))
+            loaded_threads.append(th.Thread(target=Assets._load_segement, args=(s,), daemon=True))
 
         for t in loaded_threads:
             t.start()

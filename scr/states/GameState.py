@@ -43,18 +43,20 @@ class GameState(State):
 
         if keys[py.K_BACKSPACE]:
             self.back()
+            return
 
         if self.can_space and keys[py.K_SPACE]:
             self.can_space = False
 
-            self.cards[self.current_card].next_mode()
+            self.cards[self.current_card].mode += 1
 
-            if self.cards[self.current_card].get_mode() > self.max_mode:
-                self.cards[self.current_card].reset_mode()
+            if self.cards[self.current_card].mode > self.max_mode:
+                self.cards[self.current_card].mode = 0
 
                 self.current_card += 1
                 if self.current_card >= len(self.cards):
                     self.back()
+                    return
         
         if not keys[py.K_SPACE]:
             self.can_space = True
