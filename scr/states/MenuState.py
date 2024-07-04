@@ -17,8 +17,6 @@ class MenuState(State):
         self.collections = []
         self.collection_buttons = []
         for i, (k, v) in enumerate(Assets.COLLECTIONS.items()):
-            if not v:
-                continue
             self.collections.append(CategoryCollection(k))
             self.collection_buttons.append(Button(25, 300 + 100 * i, 250, 80, k, 20, 10, 10, 20, 5, (26, 120, 210), (255, 255, 255), (255, 255, 255), font_art="Calibri"))
 
