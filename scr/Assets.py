@@ -6,6 +6,7 @@ import threading as th
 
 from os import listdir
 from os.path import isdir, isfile, join
+from itertools import batched
 
 class Assets:
     COLLECTIONS: dict[str, list[str]]
@@ -34,11 +35,9 @@ class Assets:
     def load_flags():
         Assets.FLAGS = {}
 
-        load_at_a_time = 50 # how many flags are loaded in each thread
+        LOAD_AT_A_TIME = 50 # how many flags are loaded in each thread
         flags = [f for f in listdir(Utils.FLAG_PATH)]
-        flag_segments = []
-        for i in range(0, len(flags), load_at_a_time): # Devide the flags in to chuncks
-            flag_segments.append(flags[i:i + load_at_a_time])
+        flag_segments = batched(flags, n=LOAD_AT_A_TIME)
 
         loaded_threads = []
         for s in flag_segments:

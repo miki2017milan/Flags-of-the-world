@@ -15,7 +15,7 @@ class GameState(State):
         self.can_space = True
         self.max_mode = 1
 
-    def load_cards(self, selected_categories: set[str], include_map: bool) -> None:
+    def load_cards(self, selected_categories: list[str], include_map: bool) -> None:
         cards = set() # No duplicates
         for category in selected_categories:
             for card in Assets.CATEGORIES[category]["Countries"]:
