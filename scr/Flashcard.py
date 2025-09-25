@@ -7,11 +7,11 @@ class Flashcard:
     def __init__(self, name: str):
         self.info = Utils.load_flag_info(name)
 
-        self.flag = Utils.load_flag(name)
+        self.flag = Utils.load_flag_image(name)
         self.flag_x = Utils.center_x(self.flag.get_width())
         self.flag_y = 50
 
-        self.map = Utils.load_map(name)
+        self.map = Utils.load_map_image(name)
         if self.map:
             self.map_x = Utils.center_x(self.map.get_width())
             self.map_y = Utils.center_y(self.map.get_height()) + 70
@@ -24,7 +24,7 @@ class Flashcard:
         self.text_color = (255, 255, 255)
 
         self.name_pos = []
-        self.name = Utils.wrapp_text(name, 25)
+        self.name = Utils.wrap_text(name, 25)
         for part in self.name:
             self.name_pos.append(Utils.center_x(Utils.get_text_width(part, self.name_font)))
 
@@ -36,7 +36,7 @@ class Flashcard:
                 win.blit(self.name_font.render(name_part, False, self.text_color), (self.name_pos[i], 10 + i * self.LINE_HEIGHT))
             return
         
-        win.blit(self.name_font.render("No map available", False, (255, 255, 255)), (Utils.center_x(self.get_text_width("No map available")), 500))
+        win.blit(self.name_font.render("No map available", False, (255, 255, 255)), (Utils.center_x(Utils.get_text_width("No map available", self.name_font)), 500))
 
     def render_info(self, win: py.surface.Surface) -> None:
         line_num = 0 # Track the current line

@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import pygame as py
 
 from scr.category.Category import Category
@@ -13,7 +11,7 @@ class CategoryCollection:
         increments = (230, 230)
         row = 0
         for i, category in enumerate(Assets.COLLECTIONS[collection_name]):
-            if i % 7 == 0 and i:
+            if i % 7 == 0 and i: # 7 Categories in one row
                 row += 1
             self.categories.append(Category(start_pos[0] + increments[0] * (i % 7), start_pos[1] + increments[1] * row, category, collection_name))
 

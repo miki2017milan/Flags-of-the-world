@@ -81,7 +81,7 @@ class CollectionState(State):
                 return False
                 
         return True
-    
+
     def get_selected_categories(self) -> list[str]:
         selected_categories = []
 

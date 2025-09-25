@@ -9,9 +9,9 @@ from os.path import isdir, isfile, join
 from itertools import batched
 
 class Assets:
-    COLLECTIONS: dict[str, list[str]]
-    CATEGORIES: dict[str, list[str]]
-    FLAGS: dict[str, Flashcard]
+    COLLECTIONS: dict[str, list[str]] # Group of categories e.g (Nations: [Europe, North America, ...], Dependent terretories: [...])
+    CATEGORIES: dict[str, dict[str, list[str] | str]] # Group of flags e.g (Europe: {Countries: [...], Description: "..."}, North America: ...)
+    FLAGS: dict[str, Flashcard] # All Flags
     FINISHED_LOADING = False
 
     @staticmethod
@@ -19,23 +19,23 @@ class Assets:
         Assets.COLLECTIONS = {}
         Assets.CATEGORIES = {}
 
-        for collection in listdir(Utils.CATEGORIES_PATH): # For each file in /res/Collections
-            if not isdir(join(Utils.CATEGORIES_PATH, collection)):
+        for collection in listdir(Utils.COLLECTIONS_PATH): # For each element in /res/Collections
+            if not isdir(join(Utils.COLLECTIONS_PATH, collection)):
                 continue
             Assets.COLLECTIONS[collection] = []
 
-            for category in listdir(join(Utils.CATEGORIES_PATH, collection)): # For every Category in the collection
-                if not isdir(join(Utils.CATEGORIES_PATH, collection, category)) or not isfile(join(Utils.CATEGORIES_PATH, collection, category, "Icon.png")): # only valid if a category has an icon image
+            for category in listdir(join(Utils.COLLECTIONS_PATH, collection)): # For every element in the collection
+                if not isdir(join(Utils.COLLECTIONS_PATH, collection, category)) or not isfile(join(Utils.COLLECTIONS_PATH, collection, category, "Icon.png")): # only valid if a category has an icon image
                     continue
                 Assets.COLLECTIONS[collection].append(category)
 
-                Assets.CATEGORIES[category] = Utils.load_category(join(Utils.CATEGORIES_PATH, collection, category))
+                Assets.CATEGORIES[category] = Utils.load_category_info(collection, category)
 
     @staticmethod
     def load_flags():
         Assets.FLAGS = {}
 
-        LOAD_AT_A_TIME = 50 # how many flags are loaded in each thread
+        LOAD_AT_A_TIME = 10 # how many flags are loaded in each thread
         flags = [f for f in listdir(Utils.FLAG_PATH)]
         flag_segments = batched(flags, n=LOAD_AT_A_TIME)
 
